@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!-- Developed by-->
+<!-- Umar Mahmud-->
+<!-- umarDORmahmudATfuiDOTeduDOTpk-->
+<!-- XXVIII-XI-MMXXI-->
+<!-- Gantt Chart vers 1.5-->
+<!--GNU General Public License (GPL) GPLv3-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Gantt Chart</title>
+    </head>
+    <body style="font-family:sans-serif;margin-left:auto;margin-right:auto;font-size:16px;width:1000px;">
+		<h1 style="font-size:32px;text-align:left;">Gantt Chart</h1>
+		<p>A Gantt chart is a type of bar chart that illustrates a project schedule, named after its popularizer, Henry Gantt, who designed such a chart around the years 1910–1915. There are 5 fixed phases of you project. You can enter the duration in weeks for each phase Please enter the weeks between 0 and 100 owing to space</p>
+		<p>Press the read data button first</p>
+		<form>	
+			<label>Phase 01: Feasibility Phase</label><br>
+			<input type="number" id="fno" name="firstno" value="10"><br>
+			
+			<label>Phase 02: Requirements Gathering and Analysis Phase</label><br>
+			<input type="number" id="sno" name="secondno" value="15">
+			<select id="dep2">
+				<option value="none">None</option>
+				<option value="P01">Phase 01</option>
+			</select>
+			<br>
+			
+			<label>Phase 03: Design Phase</label><br>
+			<input type="number" id="tno" name="thirdno" value="20">
+			<select id="dep3">
+				<option value="none">None</option>
+				<option value="P01">Phase 01</option>
+				<option value="P02">Phase 02</option>
+			</select>
+			<br>
+			
+			<label>Phase 04: Implementation and Coding Phase</label><br>
+			<input type="number" id="frno" name="fourthno" value="25">
+			<select id="dep4">
+				<option value="none">None</option>
+				<option value="P01">Phase 01</option>
+				<option value="P02">Phase 02</option>
+				<option value="P03">Phase 03</option>
+			</select>
+			<br>
+			
+			<label>Phase 05: Product Launch and Project Closing Phase</label><br>
+			<input type="number" id="fvno" name="fifthno" value="30">
+			<select id="dep5">
+				<option value="none">None</option>
+				<option value="P01">Phase 01</option>
+				<option value="P02">Phase 02</option>
+				<option value="P03">Phase 03</option>
+				<option value="P04">Phase 04</option>
+			</select>
+			<br>
+			<button type="button" id="rbn" onclick="readData()">
+				Read Data
+			</button>
+			<button type="button" id="fbn" onclick="drawFirstPhase()">
+				Draw First Phase
+			</button>
+			<button type="button" id="sbn" onclick="drawSecondPhase()">
+				Draw Second Phase
+			</button>
+			<button type="button" id="tbn" onclick="drawThirdPhase()">
+				Draw Third Phase
+			</button>
+			<button type="button" id="frbn" onclick="drawFourthPhase()">
+				Draw Fourth Phase
+			</button>
+			<button type="button" id="fvbn" onclick="drawFifthPhase()">
+				Draw Fifth Phase
+			</button>
+			<button type="button" onclick="clearAll()">
+				Clear!
+			</button>
+			<button type="button" onclick="init()">
+				Reset!
+			</button>
+		</form> 
+		<div style="width:500px; text-align:center; margin-left:auto; margin-right:auto; position:relative">			
+			<canvas id="theCanvas" width="600" height="300">
+				Canvas not supported; please update your browser.
+			</canvas>
+		</div>
+		
+		<script>
+			var theCanvas = document.getElementById("theCanvas");
+			var theContext = theCanvas.getContext("2d");
+			var xrow1 = 5;
+			var yrow1 = 20;
+			var num0;
+			var num1;
+			var num2;
+			var num3;
+			var num4;
+			var dep2val;
+			var dep3val;
+			var dep4val;
+			var dep5val;
+			var xrow2;
+			var yrow2;
+			var ybox = 20;
+			init();
+			
+			function init(){
+				theContext.beginPath();								
+				theContext.fillStyle = "red";
+				theContext.font = "bold 16px sans-serif";
+				theContext.fillText("Phase 01", xrow1, yrow1);
+				theContext.fillText("Phase 02", xrow1, yrow1+50);
+				theContext.fillText("Phase 03", xrow1, yrow1+100);
+				theContext.fillText("Phase 04", xrow1, yrow1+150);
+				theContext.fillText("Phase 05", xrow1, yrow1+200);
+				document.getElementById("fbn").disabled = true;
+				document.getElementById("sbn").disabled = true;
+				document.getElementById("tbn").disabled = true;
+				document.getElementById("frbn").disabled = true;
+				document.getElementById("fvbn").disabled = true;
+				document.getElementById("rbn").disabled = false;
+			}
+
+			function readData(){
+				xrow2 = xrow1+100;
+				yrow2 = yrow1-15;
+				num0 = document.getElementById("fno").value;
+				num1 = document.getElementById("sno").value;
+				num2 = document.getElementById("tno").value;
+				num3 = document.getElementById("frno").value;
+				num4 = document.getElementById("fvno").value;
+				dep2val = document.getElementById("dep2").value;
+				dep3val = document.getElementById("dep3").value;
+				dep4val = document.getElementById("dep4").value;
+				dep5val = document.getElementById("dep5").value;
+				document.getElementById("fbn").disabled = false;								
+			}
+			function drawFirstPhase(){ // first phase is not dependent on any one
+				document.getElementById("rbn").disabled = true;
+				theContext.fillStyle = "blue";
+				theContext.fillRect(xrow2,yrow2,num0,ybox);
+				document.getElementById("sbn").disabled = false;
+				document.getElementById("fbn").disabled = true;				
+			}
+			function drawSecondPhase(){ // seccond phase
+				theContext.fillStyle = "green";
+				if(dep2val == "none"){
+					theContext.fillRect(xrow2,yrow2+50,num1,ybox);
+				}
+				else{
+					var x = parseInt(xrow2)+parseInt(num0);
+					theContext.fillRect(x,yrow2+50,num1,ybox);
+				}
+				document.getElementById("tbn").disabled = false;
+				document.getElementById("sbn").disabled = true;
+			}
+			function drawThirdPhase(){ // third phase
+				theContext.fillStyle = "yellow";
+				if(dep3val == "none"){
+					theContext.fillRect(xrow2,yrow2+100,num1,ybox);
+				}
+				else if(dep3val == "P01") {
+					var x = parseInt(xrow2)+parseInt(num1);
+					theContext.fillRect(x,yrow2+100,num1,ybox);
+				}
+				else{
+					var x = parseInt(xrow2)+parseInt(num1)+parseInt(num2);
+					theContext.fillRect(x,yrow2+100,num1,ybox);
+				}
+				document.getElementById("tbn").disabled = true;
+				document.getElementById("frbn").disabled = false;
+			}
+			function drawFourthPhase(){ // fourth phase
+				theContext.fillStyle = "aqua";
+				if(dep4val == "none"){
+					theContext.fillRect(xrow2,yrow2+150,num1,ybox);
+				}
+				else if(dep4val == "P01") {
+					var x = parseInt(xrow2)+parseInt(num1);
+					theContext.fillRect(x,yrow2+150,num1,ybox);
+				}
+				else if(dep4val == "P02") {
+					var x = parseInt(xrow2)+parseInt(num1)+parseInt(num2);
+					theContext.fillRect(x,yrow2+150,num1,ybox);
+				}
+				else{
+					var x = parseInt(xrow2)+parseInt(num1)+parseInt(num2)+parseInt(num3);
+					theContext.fillRect(x,yrow2+150,num1,ybox);
+				}
+				document.getElementById("frbn").disabled = true;
+				document.getElementById("fvbn").disabled = false;
+			}
+			function drawFifthPhase(){ // fifth phase
+				theContext.fillStyle = "brown";
+				if(dep5val == "none"){
+					theContext.fillRect(xrow2,yrow2+200,num1,ybox);
+				}
+				else if(dep5val == "P01") {
+					var x = parseInt(xrow2)+parseInt(num1);
+					theContext.fillRect(x,yrow2+200,num1,ybox);
+				}
+				else if(dep5val == "P02") {
+					var x = parseInt(xrow2)+parseInt(num1)+parseInt(num2);
+					theContext.fillRect(x,yrow2+200,num1,ybox);
+				}
+				else if(dep5val == "P03") {
+					var x = parseInt(xrow2)+parseInt(num1)+parseInt(num2)+parseInt(num3);
+					theContext.fillRect(x,yrow2+200,num1,ybox);
+				}
+				else{
+					var x = parseInt(xrow2)+parseInt(num1)+parseInt(num2)+parseInt(num3)+parseInt(num4);
+					theContext.fillRect(x,yrow2+200,num1,ybox);
+				}
+				document.getElementById("fvbn").disabled = true;
+			}
+			function clearAll(){
+				theContext.clearRect(0,0, 600, 300);
+				init();
+			}
+			
+		</script>
+		<br>
+		<hr>
+		<p  style="font-size:18px;text-align:left;">Developed by Scrupulous Professor <a href="mailto:umar.mahmud@fui.edu.pk">Contact</a></p>
+		<p  style="font-size:12px;text-align:left;">Distributed under GNU General Public License (GPL) GPLv3</p>
+	</body>
+</html>
